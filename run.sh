@@ -3,12 +3,18 @@ set -u
 cd "$(dirname "$0")"
 
 LOCK_DIR=".run.lock"
-if ! mkdir "$LOCK_DIR" 2>/dev/null; then
-  echo "ATM Forecast is already running, or a stale lock exists."
-  echo "If it is not running, delete .run.lock and start again."
-  exit 0
+if [ -d "$LOCK_DIR" ]; then
+  if [ -f "$LOCK_DIR/pid" ] && kill -0 "$(cat "$LOCK_DIR/pid")" 2>/dev/null; then
+    echo "ATM Forecast is already running (PID $(cat "$LOCK_DIR/pid"))."
+    exit 0
+  fi
+  echo "Removing stale lock..."
+  rm -rf "$LOCK_DIR"
 fi
-cleanup_lock() { rmdir "$LOCK_DIR" 2>/dev/null || true; }
+mkdir "$LOCK_DIR" || exit 1
+echo $$ > "$LOCK_DIR/pid"
+
+cleanup_lock() { rm -rf "$LOCK_DIR" 2>/dev/null || true; }
 trap cleanup_lock EXIT INT TERM
 
 if [ ! -x ".venv/bin/python" ]; then
