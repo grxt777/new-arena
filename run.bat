@@ -38,7 +38,7 @@ if not exist "data\rejected" mkdir data\rejected
 start "ATM Forecast Web" /min cmd /c "cd /d %~dp0 && %PY% server.py >> logs\server.log 2>&1"
 
 echo ATM Forecast is running.
-echo Web panel: http://127.0.0.1:8080
+echo Web panel: http://127.0.0.1:8000
 echo Reports folder: data\incoming
 echo Import interval: 10 minutes
 echo Close this window to stop importing.

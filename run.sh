@@ -29,7 +29,7 @@ cleanup() {
 trap cleanup EXIT INT TERM
 
 echo "ATM Forecast is running."
-echo "Web panel: http://127.0.0.1:8080"
+echo "Web panel: http://127.0.0.1:8000"
 echo "Reports folder: data/incoming"
 echo "Import interval: 10 minutes"
 echo "Press Ctrl+C to stop."

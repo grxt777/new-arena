@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-import html, json, sqlite3
+import html, json, os, sqlite3
 from datetime import datetime, timezone
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from pathlib import Path
@@ -40,5 +40,6 @@ class Handler(BaseHTTPRequestHandler):
     def log_message(self, *_): pass
 
 if __name__=='__main__':
-    print('Открыть http://127.0.0.1:8080')
-    HTTPServer(('127.0.0.1',8080), Handler).serve_forever()
+    port=int(os.environ.get('PORT','8000'))
+    print(f'Открыть http://127.0.0.1:{port}')
+    HTTPServer(('127.0.0.1',port), Handler).serve_forever()
