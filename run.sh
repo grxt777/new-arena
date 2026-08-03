@@ -3,17 +3,29 @@ set -u
 cd "$(dirname "$0")"
 
 LOCK_DIR=".run.lock"
-if [ -d "$LOCK_DIR" ]; then
-  if [ -f "$LOCK_DIR/pid" ] && kill -0 "$(cat "$LOCK_DIR/pid")" 2>/dev/null; then
-    echo "ATM Forecast is already running (PID $(cat "$LOCK_DIR/pid"))."
-    exit 0
+
+# При повторном запуске корректно завершаем предыдущий экземпляр.
+if [ -f "$LOCK_DIR/pid" ]; then
+  OLD_PID=$(cat "$LOCK_DIR/pid" 2>/dev/null || true)
+  if [ -n "${OLD_PID:-}" ] && kill -0 "$OLD_PID" 2>/dev/null; then
+    OLD_CMD=$(ps -p "$OLD_PID" -o command= 2>/dev/null || true)
+    if [[ "$OLD_CMD" == *"run.sh"* ]]; then
+      echo "Stopping previous ATM Forecast instance (PID $OLD_PID)..."
+      kill -TERM "$OLD_PID" 2>/dev/null || true
+      for i in {1..10}; do
+        kill -0 "$OLD_PID" 2>/dev/null || break
+        sleep 0.2
+      done
+      kill -KILL "$OLD_PID" 2>/dev/null || true
+    fi
   fi
-  echo "Removing stale lock..."
+  rm -rf "$LOCK_DIR"
+elif [ -d "$LOCK_DIR" ]; then
   rm -rf "$LOCK_DIR"
 fi
+
 mkdir "$LOCK_DIR" || exit 1
 echo $$ > "$LOCK_DIR/pid"
-
 cleanup_lock() { rm -rf "$LOCK_DIR" 2>/dev/null || true; }
 trap cleanup_lock EXIT INT TERM
 
@@ -38,6 +50,7 @@ echo "ATM Forecast is running."
 echo "Web panel: http://127.0.0.1:8000"
 echo "Reports folder: data/incoming"
 echo "Import interval: 10 minutes"
+echo "A repeated ./run.sh automatically restarts the previous instance."
 echo "Press Ctrl+C to stop."
 
 while true; do
