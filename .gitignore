@@ -1,0 +1,7 @@
+data/incoming/*
+data/archive/*
+data/rejected/*
+*.db
+.venv/
+__pycache__/
+logs/*.log

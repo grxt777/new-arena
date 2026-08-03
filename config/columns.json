@@ -1,0 +1,22 @@
+{
+  "sheet_name": 0,
+  "columns": {
+    "atm_id": ["TID", "ATM ID", "Банкомат", "Код банкомата", "Терминал", "atm_id"],
+    "serial_number": ["Serial number", "Серийный номер", "Serial", "serial_number"],
+    "reported_at": ["Время отчета", "Дата отчета", "Дата", "Timestamp", "reported_at"],
+    "cash_total_uzs": ["Total remaining amount UZS", "Total remaining amount|UZS", "Общий остаток UZS", "Общий баланс UZS", "cash_total_uzs"],
+    "cash_total_usd": ["Total remaining amount USD", "Total remaining amount|USD", "Общий остаток USD", "Общий баланс USD", "cash_total_usd"],
+    "status": ["Status 1", "Статус 1", "Status", "Состояние", "status"],
+    "address": ["Адрес", "Локация", "Location", "address"],
+    "city": ["Город", "city"],
+    "latitude": ["Широта", "Latitude", "latitude"],
+    "longitude": ["Долгота", "Longitude", "longitude"]
+  },
+  "cassette_patterns": {
+    "status": "Status {n}",
+    "currency": "Currency {n}",
+    "denomination": "Values {n}",
+    "count": "Count {n}"
+  },
+  "cassette_count": 4
+}

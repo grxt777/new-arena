@@ -1,0 +1,8 @@
+{
+  "filename_timezone": "UTC",
+  "safety_cash": 5000000,
+  "default_daily_burn": 1000000,
+  "refill_jump_ratio": 1.35,
+  "critical_days": 1,
+  "history_days": 30
+}
