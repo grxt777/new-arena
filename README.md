@@ -26,16 +26,36 @@
 
 ## Быстрый запуск
 
-Требуется Python 3.10+ и `pandas`, `openpyxl`:
+### Windows
+
+Дважды запустите:
+
+```text
+install.bat
+```
+
+Затем:
+
+```text
+run.bat
+```
+
+`run.bat` запускает веб-панель и проверяет папку отчетов каждые 10 минут.
+
+### Linux/macOS
 
 ```bash
-cd atm_forecast
-python -m venv .venv
-. .venv/bin/activate                 # Windows: .venv\\Scripts\\activate
-pip install -r requirements.txt
-mkdir -p data/incoming data/archive data/rejected
-python importer.py                   # обработать имеющиеся файлы один раз
-python server.py                     # открыть http://127.0.0.1:8080
+chmod +x install.sh run.sh
+./install.sh
+./run.sh
+```
+
+Веб-панель будет доступна на `http://127.0.0.1:8080`.
+
+Новые отчеты нужно помещать в `data/incoming`. Однократный импорт без запуска цикла:
+
+```bash
+.venv/bin/python importer.py
 ```
 
 После этого новые отчеты копируются в `data/incoming`. Для регулярной обработки:
