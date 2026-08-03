@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-import hashlib, json, logging, re, shutil, sqlite3
+# -*- coding: utf-8 -*-
+import hashlib, json, logging, re, shutil, sqlite3, time
 from datetime import datetime, timezone
 from zoneinfo import ZoneInfo
 from pathlib import Path
@@ -100,6 +101,12 @@ def process(path):
  except Exception as e:
   c.execute('UPDATE files SET status=?,error=? WHERE id=?',('rejected',str(e),file_id));c.commit();c.close();safe_move(path,REJECTED,digest);logging.exception('Ошибка %s',path.name)
 def main():
- for p in sorted(INCOMING.iterdir()):
-  if p.is_file() and p.suffix.lower() in ('.csv','.xlsx','.xlsm'):process(p)
+ logging.info("Импортер запущен (сканирование каждые 5 сек)")
+ while True:
+  try:
+   for p in sorted(INCOMING.iterdir()):
+    if p.is_file() and p.suffix.lower() in ('.csv','.xlsx','.xlsm'):process(p)
+  except Exception as e:
+   logging.exception("Ошибка в цикле сканирования: %s", e)
+  time.sleep(5)
 if __name__=='__main__':main()

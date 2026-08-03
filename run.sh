@@ -49,11 +49,11 @@ trap cleanup EXIT INT TERM
 echo "ATM Forecast is running."
 echo "Web panel: http://127.0.0.1:8000"
 echo "Reports folder: data/incoming"
-echo "Import interval: 10 minutes"
+echo "Import interval: 5 seconds"
 echo "A repeated ./run.sh automatically restarts the previous instance."
 echo "Press Ctrl+C to stop."
 
 while true; do
   .venv/bin/python importer.py >> logs/importer.log 2>&1
-  sleep 600
+  sleep 5
 done

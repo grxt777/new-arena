@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 import html, json, os, sqlite3
 from datetime import datetime, timezone
 from http.server import BaseHTTPRequestHandler, HTTPServer
